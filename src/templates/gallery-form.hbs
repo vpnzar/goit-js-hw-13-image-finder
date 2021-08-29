@@ -1,0 +1,16 @@
+<ul class='gallery'>
+  {{#each this}}
+    <li class='gallery__item'>
+      <a class='gallery__link' href={{this.largeImageURL}}>
+        <img
+          class='gallery__image'
+          src={{this.webformatURL}}
+          data-source={{imageURL}}
+          alt={{tags}}
+          width='370'
+          height='250'
+        />
+      </a>
+    </li>
+  {{/each}}
+</ul>
