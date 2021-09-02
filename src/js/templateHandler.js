@@ -12,9 +12,18 @@ function createSearchForm() {
   inputFormLink.after(boxResult);
 }
 
-function createBodyMarkupForm(typeFormTemplate, items) {
+function createBodyMarkupForm(typePlace, items) {
   const imageMarkupCreate = document.querySelector('.container-result');
-  imageMarkupCreate.innerHTML = typeFormTemplate(items);
+  imageMarkupCreate.insertAdjacentHTML(`${typePlace}`, galleryFormTemplate(items));
 }
 
-export { createSearchForm, createBodyMarkupForm };
+function createLoadBtn() {
+  const imageMarkupCreate = document.querySelector('.container-result');
+  const loadMoreMarkupBtn = document.createElement('div');
+  imageMarkupCreate.after(loadMoreMarkupBtn);
+  loadMoreMarkupBtn.classList.add('load');
+  loadMoreMarkupBtn.setAttribute('id', 'button');
+  loadMoreMarkupBtn.textContent = 'Load More...';
+}
+
+export { createSearchForm, createBodyMarkupForm, createLoadBtn };

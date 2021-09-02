@@ -4,14 +4,15 @@ import searchFormTemplate from '../templates/search-form.hbs';
 import photoCardTemplate from '../templates/photo-card.hbs';
 import galleryFormTemplate from '../templates/gallery-form.hbs';
 import debounce from '../..//node_modules/lodash.debounce/index';
-import { createSearchForm, createBodyMarkupForm } from './templateHandler';
+import { createSearchForm, createBodyMarkupForm, createLoadBtn } from './templateHandler';
+import { alert, defaultModules } from '../../node_modules/@pnotify/core';
 const API_URL = 'https://pixabay.com/api';
 const API_KEY = '23038221-87f79236823d8e345a162521c';
-let API_PAGE = 1;
 const refs = getRefs();
+let pageNumber = 1;
+const queryImgResultsALL = [];
 
 document.addEventListener('DOMContentLoaded', bodyMarkup);
-// debugger;
 
 function bodyMarkup() {
   createSearchForm();
@@ -20,94 +21,66 @@ function bodyMarkup() {
   inputFormLink.addEventListener('input', debounce(inputHandler, 500));
 }
 
-function inputHandler(e) {
-  e.preventDefault();
-
-  searchPhotoCollection(e.data);
-  const galleryFormLink = document.querySelector('.gallery');
-}
-
-function searchPhotoCollection(query, perPage = 12) {
+function searchPhotoCollection(query, pageNumber) {
   axios
     .get(
-      `${API_URL}/?image_type=photo&orientation=horizontal&q=${query}&page=${API_PAGE}&per_page=${perPage}&key=${API_KEY}`,
+      `${API_URL}/?image_type=photo&orientation=horizontal&q=${query}&page=${pageNumber}&per_page=12&key=${API_KEY}`,
     )
     .then(data => {
-      handleResult(data.data.hits);
+      if (pageNumber === 1) {
+        handleResult(data.data.hits);
+        queryImgResultsALL.splice(...data.data.hits);
+      } else queryImgResultsALL.splice(...data.data.hits);
     })
     .catch();
 }
 
-function handleResult(result) {
-  if (result !== 1) {
-    renderCollection(result, galleryFormTemplate);
+function inputHandler(e) {
+  e.preventDefault();
+  searchPhotoCollection(e.data, pageNumber);
+
+  if (e.data !== '') {
+    createLoadBtn();
+    eventLoadMoreBtn();
   }
-  // else if (result === 1) {
-  //   renderCollection(result, photoCardTemplate);
+  //  else if (e.data !== '') {
+  //   const imageMarkupCreate = document.querySelector('.container-result');
+  //   imageMarkupCreate.innerHTML = '';
+  //   searchPhotoCollection(e.data, currentPage++);
   // }
+
+  console.log(queryImgResultsALL);
 }
 
-function renderCollection(arr, renderCard) {
-  createBodyMarkupForm(renderCard, arr);
+function handleResult(arr) {
+  createBodyMarkupForm('afterbegin', arr);
   // galleryFormLink.innerHTML = '';
 }
 
-// window.onload = () => {
-//   const images = document.querySelectorAll('.gallery__item');
-//   const options = {
-//     root: null,
-//     rootMargin: '0px',
-//     threshold: 0.5,
-//   };
+function eventLoadMoreBtn() {
+  const loadMoreBtn = document.querySelector('.load');
+  loadMoreBtn.addEventListener('click', loadMoreImg);
+}
 
-//   function handleImg(myImg, observer) {
-//     myImg.forEach(myImgSingle => {
-//       console.log('object');
-//       // if (myImgSingle.isIntersecting) {
-//       //   const lazyImg = myImgSingle.target;
+function loadMoreImg(e) {
+  e.preventDefault();
+  const loadMoreBtn = document.querySelector('.load');
 
-//       //   console.log(lazyImg);
-//       // }
-//     });
-//   }
-//   const observer = new IntersectionObserver(handleImg, options);
+  searchPhotoCollection(pageNumber++);
+  createBodyMarkupForm('beforeend', queryImgResultsALL);
+  // const galleryListResults = document.querySelector('.gallery');
+  // const loadMoreResult = document.createElement('div');
+  // loadMoreBtn.append(galleryListResults);
+  // loadMoreResult.classList.add('load-more');
+  // const containerLoadMore = document.querySelector('.load-more');
+  //   if (e) {
 
-//   images.forEach(img => {
-//     observer.observe(img);
-//   });
-// };
-window.onload = () => {
-  // устанавливаем настройки
-  const options = {
-    // родитель целевого элемента - область просмотра
-    root: null,
-    // без отступов
-    rootMargin: '0px',
-    // процент пересечения - половина изображения
-    threshold: 1,
-  };
+  //   }
+  console.log(queryImgResultsALL);
+}
 
-  // создаем наблюдатель
-  const observer = new IntersectionObserver((entries, observer) => {
-    // для каждой записи-целевого элемента
-    entries.forEach(entry => {
-      // если элемент является наблюдаемым
-      if (entry.isIntersecting) {
-        const lazyImg = entry.target;
-        // выводим информацию в консоль - проверка работоспособности наблюдателя
-        console.log(lazyImg);
-        // меняем фон контейнера
-        lazyImg.style.background = 'deepskyblue';
-        // прекращаем наблюдение
-        observer.unobserve(lazyImg);
-      }
-    });
-  }, options);
+// // defaultModules.set(PNotifyMobile, {});
 
-  // с помощью цикла следим за всеми img на странице
-  const arr = document.querySelectorAll('.container-result');
-  arr.forEach(i => {
-    observer.observe(i);
-    console.log(i);
-  });
-};
+// alert({
+//   text: 'Notice me, senpai!',
+// });

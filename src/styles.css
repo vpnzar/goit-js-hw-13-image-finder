@@ -71,3 +71,20 @@ form.search-form:before {
   opacity: 0.5;
   z-index: 1000;
 }
+
+.load {
+  margin: 30px auto 10px;
+  display: table;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  color: rgb(82, 77, 77);
+  border-radius: 2px;
+  background-color: #fff;
+  box-shadow: 0 0 15px 4px rgb(0 0 0 / 6%);
+}
+
+.is-hidden {
+  display: none;
+}
