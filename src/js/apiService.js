@@ -1,18 +1,17 @@
 import axios from 'axios';
 import getRefs from './refs';
-import searchFormTemplate from '../templates/search-form.hbs';
-import photoCardTemplate from '../templates/photo-card.hbs';
-import galleryFormTemplate from '../templates/gallery-form.hbs';
+// import searchFormTemplate from '../templates/search-form.hbs';
+// import photoCardTemplate from '../templates/photo-card.hbs';
+// import galleryFormTemplate from '../templates/gallery-form.hbs';
 import debounce from '../..//node_modules/lodash.debounce/index';
 import { createSearchForm, createBodyMarkupForm, createLoadBtn } from './templateHandler';
 import { alert, defaultModules } from '../../node_modules/@pnotify/core';
+import * as basicLightbox from '../../node_modules/basiclightbox';
 const API_URL = 'https://pixabay.com/api';
 const API_KEY = '23038221-87f79236823d8e345a162521c';
 const refs = getRefs();
 let pageNumber = 1;
-const queryResult = {};
-console.log(queryResult);
-const queryImgResultsALL = [];
+let searchQuery = '';
 
 document.addEventListener('DOMContentLoaded', bodyMarkup);
 
@@ -21,7 +20,7 @@ function bodyMarkup() {
   const inputFormLink = document.querySelector('#search-form');
   createLoadBtn();
   eventLoadMoreBtn();
-  inputFormLink.addEventListener('input', debounce(inputHandler, 500));
+  inputFormLink.addEventListener('input', debounce(inputHandler, 1000));
 }
 
 function searchPhotoCollection(query, pageNumber) {
@@ -41,21 +40,20 @@ function searchPhotoCollection(query, pageNumber) {
 
 function inputHandler(e) {
   e.preventDefault();
+  searchQuery = e.data;
+  const imageMarkupCreate = document.querySelector('.container-result');
+  imageMarkupCreate.innerHTML = '';
   searchPhotoCollection(e.data, pageNumber);
 
-  queryResult.key = e.data;
-
-  // if (e.data !== '') {
-
-  // }
-
-  console.log(queryImgResultsALL);
+  if (searchQuery !== '') {
+    setTimeout(function () {
+      const loadMoreMarkupBtn = document.querySelector('#button');
+      loadMoreMarkupBtn.classList.remove('is-hidden');
+      const imageGallery = document.querySelector('.gallery');
+      imageGallery.addEventListener('click', openModalWindow);
+    }, 1000);
+  }
 }
-
-// function handleResult(arr) {
-//   createBodyMarkupForm('afterbegin', arr);
-//   // galleryFormLink.innerHTML = '';
-// }
 
 function eventLoadMoreBtn() {
   const loadMoreBtn = document.querySelector('.load');
@@ -64,22 +62,27 @@ function eventLoadMoreBtn() {
 
 function loadMoreImg(e) {
   e.preventDefault();
-  loadMoreBtn = document.querySelector('.load');
+  // loadMoreBtn = document.querySelector('.load');
 
-  searchPhotoCollection(car, pageNumber++);
+  searchPhotoCollection(searchQuery, ++pageNumber);
 
-  // loadMoreBtn.insertA
-
-  // const galleryListResults = document.querySelector('.gallery');
-  // const loadMoreResult = document.createElement('div');
-  // loadMoreBtn.append(galleryListResults);
-  // loadMoreResult.classList.add('load-more');
-  // const containerLoadMore = document.querySelector('.load-more');
-  //   if (e) {
-
-  //   }
-  // console.log('queryImgResultsALL');
+  setTimeout(function () {
+    const imageMarkupCreate = document.querySelector('.container-result');
+    const lastGallery = imageMarkupCreate.lastChild;
+    lastGallery.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }, 500);
 }
+
+function openModalWindow(e) {
+  e.preventDefault();
+  // console.log('object');
+  instance.show();
+}
+
+const instance = basicLightbox.create(`${console.log('object')}`);
 
 // // defaultModules.set(PNotifyMobile, {});
 

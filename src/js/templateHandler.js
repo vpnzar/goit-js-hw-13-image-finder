@@ -22,6 +22,7 @@ function createLoadBtn() {
   const loadMoreMarkupBtn = document.createElement('div');
   imageMarkupCreate.after(loadMoreMarkupBtn);
   loadMoreMarkupBtn.classList.add('load');
+  loadMoreMarkupBtn.classList.add('is-hidden');
   loadMoreMarkupBtn.setAttribute('id', 'button');
   loadMoreMarkupBtn.textContent = 'Load More...';
 }
