@@ -30,9 +30,9 @@ function searchPhotoCollection(query, pageNumber) {
     )
     .then(data => {
       if (pageNumber === 1) {
-        createBodyMarkupForm('afterbegin', data.data.hits);
+        createBodyMarkupForm(data.data.hits);
       } else if (pageNumber !== 1) {
-        createBodyMarkupForm('beforeend', data.data.hits);
+        createBodyMarkupForm(data.data.hits);
       }
     })
     .catch();
@@ -76,15 +76,21 @@ function loadMoreImg(e) {
   }, 500);
 }
 
-function openModalWindow(e) {
-  e.preventDefault();
-  // console.log('object');
-  instance.show();
-}
+document.querySelector('.gallery').onclick = () => {
+  basicLightbox
+    .create(
+      `
+		<img width="1400" height="900" src="https://ph-static.imgix.net/page_unsubscribed.gif?auto=format&auto=compress&codec=mozjpeg&cs=strip&fit=max&dpr=1">
+	`,
+    )
+    .show();
+};
 
-const instance = basicLightbox.create(`${console.log('object')}`);
-
-// // defaultModules.set(PNotifyMobile, {});
+// function openModalWindow(e) {
+//   e.preventDefault();
+//   // console.log('object');
+//   instance.show();
+// }
 
 // alert({
 //   text: 'Notice me, senpai!',

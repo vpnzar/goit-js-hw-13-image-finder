@@ -7,14 +7,20 @@ import refs from './refs';
 function createSearchForm() {
   document.body.insertAdjacentHTML('afterbegin', searchFormTemplate());
   const inputFormLink = document.querySelector('#search-form');
-  const boxResult = document.createElement('div');
-  boxResult.classList.add('container-result');
-  inputFormLink.after(boxResult);
+  const containerResult = document.createElement('div');
+  containerResult.classList.add('container-result');
+  inputFormLink.after(containerResult);
+  // containerResult.innerHTML = galleryFormTemplate;
 }
 
-function createBodyMarkupForm(typePlace, items) {
-  const imageMarkupCreate = document.querySelector('.container-result');
-  imageMarkupCreate.insertAdjacentHTML(`${typePlace}`, galleryFormTemplate(items));
+function createBodyMarkupForm(items) {
+  const containerResult = document.querySelector('.container-result');
+  const galleryResult = document.createElement('ul');
+  galleryResult.classList.add('gallery');
+  containerResult.appendChild(galleryResult);
+  // containerResult.innerHTML = '<ul class="gallery"></ul>';
+  // const imageGallery = document.querySelector('.gallery');
+  galleryResult.innerHTML = photoCardTemplate(items);
 }
 
 function createLoadBtn() {
