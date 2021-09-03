@@ -1,8 +1,7 @@
-import API from './apiService';
+// import API from './apiService';
 import searchFormTemplate from '../templates/search-form.hbs';
 import photoCardTemplate from '../templates/photo-card.hbs';
-import galleryFormTemplate from '../templates/gallery-form.hbs';
-import refs from './refs';
+// import refs from './refs';
 
 function createSearchForm() {
   document.body.insertAdjacentHTML('afterbegin', searchFormTemplate());
@@ -10,7 +9,6 @@ function createSearchForm() {
   const containerResult = document.createElement('div');
   containerResult.classList.add('container-result');
   inputFormLink.after(containerResult);
-  // containerResult.innerHTML = galleryFormTemplate;
 }
 
 function createBodyMarkupForm(items) {
@@ -18,8 +16,6 @@ function createBodyMarkupForm(items) {
   const galleryResult = document.createElement('ul');
   galleryResult.classList.add('gallery');
   containerResult.appendChild(galleryResult);
-  // containerResult.innerHTML = '<ul class="gallery"></ul>';
-  // const imageGallery = document.querySelector('.gallery');
   galleryResult.innerHTML = photoCardTemplate(items);
 }
 

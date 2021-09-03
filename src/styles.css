@@ -47,6 +47,7 @@ body {
 .photo-card {
   height: 100%;
   width: 100%;
+  cursor: pointer;
   object-fit: cover;
   transition: transform var(--animation-duration) var(--timing-function);
 }
@@ -68,6 +69,10 @@ body {
   align-items: center;
   justify-content: space-around;
   margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1;
 }
 
 .material-icons {
@@ -126,6 +131,15 @@ form.search-form:before {
   box-shadow: 0 0 15px 4px rgb(0 0 0 / 6%);
 }
 
+.load:hover {
+  transform: scale(1.03);
+  border-radius: 4px;
+}
+
 .is-hidden {
   display: none;
+}
+
+.material-icons {
+  font-size: 14px;
 }
