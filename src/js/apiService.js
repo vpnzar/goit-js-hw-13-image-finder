@@ -69,7 +69,7 @@ function loadMoreImg(e) {
       behavior: 'smooth',
       block: 'start',
     });
-  }, 500);
+  }, 1000);
 }
 
 // function openModal(e) {
