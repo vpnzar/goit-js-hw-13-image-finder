@@ -1,9 +1,8 @@
 import axios from '../../node_modules/axios/dist/axios';
 import refs from './refs';
-import debounce from '../..//node_modules/lodash.debounce/index';
 import { createSearchForm, createBodyMarkupForm, createLoadBtn } from './templateHandler';
 import { alert, defaultModules } from '../../node_modules/@pnotify/core';
-import * as basicLightbox from 'basiclightbox';
+import * as basicLightbox from '../../node_modules/basiclightbox/dist/basicLightbox.min';
 const API_URL = 'https://pixabay.com/api';
 const API_KEY = '23038221-87f79236823d8e345a162521c';
 let pageNumber = 1;
@@ -45,11 +44,14 @@ function inputHandler(e) {
     setTimeout(function () {
       const loadMoreMarkupBtn = document.querySelector('#button');
       loadMoreMarkupBtn.classList.remove('is-hidden');
-      const imageGallery = document.querySelector('.gallery');
+      openModalEvent(e);
     }, 1000);
   }
+}
 
-  const elemGallery = document.querySelector('img');
+function openModalEvent() {
+  const imageMarkupCreate = document.querySelector('.container-result');
+  imageMarkupCreate.addEventListener('click', openModalWindow);
 }
 
 function eventLoadMoreBtn() {
@@ -60,6 +62,7 @@ function eventLoadMoreBtn() {
 function loadMoreImg(e) {
   e.preventDefault();
   searchPhotoCollection(searchQuery, ++pageNumber);
+
   setTimeout(function () {
     const imageMarkupCreate = document.querySelector('.container-result');
     const lastGallery = imageMarkupCreate.lastChild;
@@ -68,4 +71,14 @@ function loadMoreImg(e) {
       block: 'start',
     });
   }, 1000);
+}
+
+function openModalWindow(e) {
+  const instance = basicLightbox
+    .create(
+      `
+    <img src="${e.target.dataset.source}">
+`,
+    )
+    .show();
 }

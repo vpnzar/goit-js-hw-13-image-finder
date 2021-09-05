@@ -1,7 +1,14 @@
 {{#each this}}
   <li class='item-card'>
     <div class='photo-card'>
-      <img class='link' src={{this.webformatURL}} alt={{this.tags}} width='100%' height='92%' />
+      <img
+        class='link'
+        src={{this.webformatURL}}
+        data-source={{this.largeImageURL}}
+        alt={{this.tags}}
+        width='100%'
+        height='92%'
+      />
 
       <div class='stats'>
 
