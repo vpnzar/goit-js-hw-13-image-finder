@@ -1,7 +1,5 @@
-// import API from './apiService';
 import searchFormTemplate from '../templates/search-form.hbs';
 import photoCardTemplate from '../templates/photo-card.hbs';
-// import refs from './refs';
 
 function createSearchForm() {
   document.body.insertAdjacentHTML('afterbegin', searchFormTemplate());
