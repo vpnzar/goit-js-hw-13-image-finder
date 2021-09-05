@@ -1,6 +1,5 @@
-import axios from 'axios';
+import axios from '../../node_modules/axios/dist/axios';
 import refs from './refs';
-// import photoCardTemplate from '../templates/photo-card.hbs';
 import debounce from '../..//node_modules/lodash.debounce/index';
 import { createSearchForm, createBodyMarkupForm, createLoadBtn } from './templateHandler';
 import { alert, defaultModules } from '../../node_modules/@pnotify/core';
@@ -9,6 +8,7 @@ const API_URL = 'https://pixabay.com/api';
 const API_KEY = '23038221-87f79236823d8e345a162521c';
 let pageNumber = 1;
 let searchQuery = '';
+console.log(searchQuery);
 
 document.addEventListener('DOMContentLoaded', bodyMarkup);
 
@@ -17,7 +17,7 @@ function bodyMarkup() {
   const inputFormLink = document.querySelector('#search-form');
   createLoadBtn();
   eventLoadMoreBtn();
-  inputFormLink.addEventListener('input', debounce(inputHandler, 1000));
+  inputFormLink.addEventListener('submit', inputHandler);
 }
 
 function searchPhotoCollection(query, pageNumber) {
@@ -36,18 +36,16 @@ function searchPhotoCollection(query, pageNumber) {
 
 function inputHandler(e) {
   e.preventDefault();
-  searchQuery = e.data;
+  searchQuery = e.target[0].value;
   const imageMarkupCreate = document.querySelector('.container-result');
   imageMarkupCreate.innerHTML = '';
-  searchPhotoCollection(e.data, pageNumber);
+  searchPhotoCollection(searchQuery);
 
   if (searchQuery !== '') {
     setTimeout(function () {
       const loadMoreMarkupBtn = document.querySelector('#button');
       loadMoreMarkupBtn.classList.remove('is-hidden');
       const imageGallery = document.querySelector('.gallery');
-      // const imageItemGallery = document.querySelector('.link');
-      // imageItemGallery.addEventListener('click', openModal);
     }, 1000);
   }
 
@@ -71,13 +69,3 @@ function loadMoreImg(e) {
     });
   }, 1000);
 }
-
-// function openModal(e) {
-//   const instance = basicLightbox
-//     .create(
-//       `
-//     <img src="https://ph-static.imgix.net/page_unsubscribed.gif?auto=format&auto=compress&codec=mozjpeg&cs=strip&fit=max&dpr=1">
-// `,
-//     )
-//     .show();
-// }

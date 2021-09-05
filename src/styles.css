@@ -109,7 +109,7 @@ form.search-form:before {
   display: block;
   width: 14px;
   height: 14px;
-  background-image: url(http://getbootstrap.com/2.3.2/assets/img/glyphicons-halflings.png);
+  /* background-image: url(http://getbootstrap.com/2.3.2/assets/img/glyphicons-halflings.png); */
   background-position: -48px 0;
   position: absolute;
   top: 11px;
