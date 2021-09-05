@@ -1,13 +1,14 @@
 import axios from '../../node_modules/axios/dist/axios';
 import refs from './refs';
 import { createSearchForm, createBodyMarkupForm, createLoadBtn } from './templateHandler';
-import { alert, defaultModules } from '../../node_modules/@pnotify/core';
+import { alert, defaultModules, defaults } from '../../node_modules/@pnotify/core/dist/PNotify';
 import * as basicLightbox from '../../node_modules/basiclightbox/dist/basicLightbox.min';
 const API_URL = 'https://pixabay.com/api';
 const API_KEY = '23038221-87f79236823d8e345a162521c';
 let pageNumber = 1;
 let searchQuery = '';
-console.log(searchQuery);
+
+defaults.delay = 1000;
 
 document.addEventListener('DOMContentLoaded', bodyMarkup);
 
@@ -26,10 +27,13 @@ function searchPhotoCollection(query, pageNumber) {
     )
     .then(data => {
       createBodyMarkupForm(data.data.hits);
+
+      if (data.data.hits.length === 0) {
+        alert('Please input right request');
+      }
     })
     .catch(error => {
       alert('API request error. See console log');
-      if (error) console.error(error);
     });
 }
 
@@ -40,13 +44,15 @@ function inputHandler(e) {
   imageMarkupCreate.innerHTML = '';
   searchPhotoCollection(searchQuery);
 
-  if (searchQuery !== '') {
-    setTimeout(function () {
+  setTimeout(function () {
+    const gallery = document.querySelector('.gallery');
+    const galleryItems = document.querySelector('.item-card');
+    if (gallery.contains(galleryItems)) {
       const loadMoreMarkupBtn = document.querySelector('#button');
       loadMoreMarkupBtn.classList.remove('is-hidden');
-      openModalEvent(e);
-    }, 1000);
-  }
+      openModalEvent();
+    }
+  }, 1000);
 }
 
 function openModalEvent() {
